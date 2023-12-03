@@ -1,3 +1,5 @@
+use std::string;
+
 const MAX_RED: u32 = 12;
 const MAX_GREEN: u32 = 13;
 const MAX_BLUE: u32 = 14;
@@ -5,6 +7,7 @@ const MAX_BLUE: u32 = 14;
 
 fn main() {
     part_1();
+    part_2();
 }
 
 
@@ -18,8 +21,26 @@ fn part_1() {
 
 fn print_sum(filename: &str) {
     let mut sum = 0;
+    let contents = read_file(filename);
+    let games = get_games_from_contents(&contents);
+    for game in &games {
+        if is_game_valid(game) {
+            sum += game.id;
+        }
+    }
+    println!("{filename}: {sum}");
+}
+
+
+fn read_file(filename: &str) -> string::String {
     let contents = std::fs::read_to_string(filename).expect("Error reading file");
-    let lines = contents.split("\n");
+    contents
+}
+
+
+fn get_games_from_contents(file_contents: &str) -> Vec<Game> {
+    let mut games = Vec::new();
+    let lines = file_contents.split("\n");
     for line in lines {
         let game_id = get_game_id(line);
         let game_sets = get_game_sets(line);
@@ -27,12 +48,9 @@ fn print_sum(filename: &str) {
             id: game_id,
             sets: game_sets,
         };
-        let is_valid = is_game_valid(&game);
-        if is_valid {
-            sum += game.id;
-        }
+        games.push(game);
     }
-    println!("{filename}: {sum}");
+    games
 }
 
 
@@ -124,4 +142,54 @@ fn is_game_valid(game: &Game) -> bool {
         }
     }
     true
+}
+
+
+fn part_2() {
+    println!("PART 2");
+    println!("------");
+    print_power("example.txt");
+    print_power("input.txt");
+}
+
+
+fn print_power(filename: &str) {
+    let contents = read_file(filename);
+    let games = get_games_from_contents(&contents);
+    let mut sum = 0;
+    for game in &games {
+        let power = get_power(game);
+        sum += power;
+    }
+    println!("{filename}: {sum}");
+}
+
+
+fn get_max_cubes(game: &Game) -> CubesSet {
+    let mut max_red = 0;
+    let mut max_green = 0;
+    let mut max_blue = 0;
+    for set in &game.sets {
+        if set.red > max_red {
+            max_red = set.red;
+        }
+        if set.green > max_green {
+            max_green = set.green;
+        }
+        if set.blue > max_blue {
+            max_blue = set.blue;
+        }
+    }
+    CubesSet {
+        red: max_red,
+        green: max_green,
+        blue: max_blue,
+    }
+}
+
+
+fn get_power(game: &Game) -> u32 {
+    let max_cubes = get_max_cubes(game);
+    let power = max_cubes.red * max_cubes.green * max_cubes.blue;
+    power
 }
