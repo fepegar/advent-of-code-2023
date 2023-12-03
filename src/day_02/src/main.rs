@@ -1,4 +1,5 @@
 use std::string;
+use std::fs::read_to_string;
 
 const MAX_RED: u32 = 12;
 const MAX_GREEN: u32 = 13;
@@ -32,7 +33,7 @@ fn part_1(filename: &str) {
 
 
 fn read_file(filename: &str) -> string::String {
-    let contents = std::fs::read_to_string(filename).expect("Error reading file");
+    let contents = read_to_string(filename).expect("Error reading file");
     contents
 }
 

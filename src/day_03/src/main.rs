@@ -1,6 +1,7 @@
 use std::cmp;
 use std::string;
 use std::collections::HashMap;
+use std::fs::read_to_string;
 
 fn main() {
     println!("PART 1");
@@ -30,7 +31,7 @@ fn part_1(filename: &str) {
 
 
 fn read_file(filename: &str) -> string::String {
-    let contents = std::fs::read_to_string(filename).expect("Error reading file");
+    let contents = read_to_string(filename).expect("Error reading file");
     contents
 }
 
