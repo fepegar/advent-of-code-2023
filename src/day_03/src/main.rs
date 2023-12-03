@@ -15,6 +15,7 @@ fn part_1(filename: &str) {
     let numbers = get_numbers_from_schematic(&schematic);
     let mut sum = 0;
     for number in numbers {
+        println!("{row}", row=number.row);
         println!("{value}", value=number.value);
         println!("Is part?");
         if is_part(&number, &schematic) {
@@ -113,20 +114,23 @@ fn is_part(number: &Number, schematic: &Vec<Vec<char>>) -> bool {
     let row_fin = cmp::min(number.row + 1, num_rows - 1);
     for row in row_ini..=row_fin {
         let col_ini = cmp::max(number.col_ini - 1, 0);
-        let col_fin = cmp::min(number.col_fin + 1, num_cols - 1);
-        println!("number row: {row_ini}", row_ini=number.row);
-        println!("number col_ini: {col_ini}", col_ini=number.col_ini);
-        println!("number col_fin: {col_fin}", col_fin=number.col_fin);
-        println!("row_ini: {row_ini}", row_ini=row_ini);
-        println!("row_fin: {row_fin}", row_fin=row_fin);
-        println!("col_ini: {col_ini}", col_ini=col_ini);
-        println!("col_fin: {col_fin}", col_fin=col_fin);
+        let col_fin = cmp::min(number.col_fin, num_cols - 1);
+        // println!("number col_fin: {col_fin}", col_fin=number.col_fin);
+        // println!("row_ini: {row_ini}", row_ini=row_ini);
+        // println!("row_fin: {row_fin}", row_fin=row_fin);
+        // println!("col_ini: {col_ini}", col_ini=col_ini);
+        // println!("col_fin: {col_fin}", col_fin=col_fin);
         for col in col_ini..=col_fin {
             let value = schematic[row as usize][col as usize];
-            println!("value in row {row} and col {col}: {value}", row=row, col=col, value=value);
+            // println!("value in row {row} and col {col}: {value}", row=row, col=col, value=value);
             match value {
                 '0'..='9' | '.' => (),
-                _ => return true,
+                _ => {
+                    println!("number row: {row_ini}", row_ini=number.row);
+                    println!("number col_ini: {col_ini}", col_ini=number.col_ini);
+                    println!("value in row {row} and col {col}: {value}", row=row, col=col, value=value);
+                    return true;
+                },
             }
         }
     }
