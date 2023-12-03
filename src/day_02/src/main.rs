@@ -6,20 +6,19 @@ const MAX_BLUE: u32 = 14;
 
 
 fn main() {
-    part_1();
-    part_2();
-}
-
-
-fn part_1() {
     println!("PART 1");
     println!("------");
-    print_sum("example.txt");
-    print_sum("input.txt");
+    part_1("example.txt");
+    part_1("input.txt");
+    println!("");
+    println!("PART 2");
+    println!("------");
+    part_2("example.txt");
+    part_2("input.txt");
 }
 
 
-fn print_sum(filename: &str) {
+fn part_1(filename: &str) {
     let mut sum = 0;
     let contents = read_file(filename);
     let games = get_games_from_contents(&contents);
@@ -145,15 +144,7 @@ fn is_game_valid(game: &Game) -> bool {
 }
 
 
-fn part_2() {
-    println!("PART 2");
-    println!("------");
-    print_power("example.txt");
-    print_power("input.txt");
-}
-
-
-fn print_power(filename: &str) {
+fn part_2(filename: &str) {
     let contents = read_file(filename);
     let games = get_games_from_contents(&contents);
     let mut sum = 0;
