@@ -1,7 +1,6 @@
 use std::fs::read_to_string;
 
 
-// Define array of strings containing "one", "two", ..., "nine"
 const NUMBERS: [&str; 9] = [
     "one",
     "two",
@@ -99,7 +98,6 @@ fn get_first_digit_2(line: &str) -> Option<char> {
         if character.is_digit(10) {
             return Some(character);
         } else {
-            // Enumerate numbers
             for (index, number) in NUMBERS.iter().enumerate() {
                 if substring.starts_with(number) {
                     return Some(std::char::from_digit(index as u32 + 1, 10)?);
@@ -119,7 +117,6 @@ fn get_last_digit_2(line: &str) -> Option<char> {
         if character.is_digit(10) {
             result = Some(character);
         } else {
-            // Enumerate numbers
             for (index, number) in NUMBERS.iter().enumerate() {
                 if substring.starts_with(number) {
                     result = Some(std::char::from_digit(index as u32 + 1, 10)?);
