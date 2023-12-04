@@ -14,13 +14,9 @@ fn main() {
 
 
 fn part_1(path: &str) {
-    let file_content = read_to_string(path)
-        .expect("Could not read file"
-    );
-    let lines = file_content.lines();
+    let cards = read_cards(path);
     let mut total_points = 0;
-    for line in lines {
-        let card = Card::from_line(line);
+    for card in cards {
         total_points += card.get_points();
     }
     println!("{path}: {total_points}");
@@ -28,7 +24,7 @@ fn part_1(path: &str) {
 
 
 struct Card {
-    id: u8,
+    _id: u8,
     winning_numbers: Vec<u8>,
     numbers: Vec<u8>,
 }
@@ -55,7 +51,7 @@ impl Card {
         let winning_numbers = Card::split_numbers(numbers_parts[0]);
         let numbers = Card::split_numbers(numbers_parts[1]);
         Card {
-            id,
+            _id: id,
             winning_numbers,
             numbers,
         }
@@ -73,4 +69,17 @@ impl Card {
             _ => 2u32.pow(num_winning_numbers - 1),
         }
     }
+}
+
+
+fn read_cards(path: &str) -> Vec<Card> {
+    let file_content = read_to_string(path)
+        .expect("Could not read file"
+    );
+    let lines = file_content.lines();
+    let mut cards = Vec::new();
+    for line in lines {
+        cards.push(Card::from_line(line));
+    }
+    cards
 }
