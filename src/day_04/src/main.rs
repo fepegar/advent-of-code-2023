@@ -87,14 +87,14 @@ impl Card {
 
 fn part_2(path: &str) {
     let cards = read_cards(path);
-    let won_cards = get_won_cards(cards);
+    let won_cards = get_won_cards(&cards);
     println!("{path}: {num_won_cards}", num_won_cards=won_cards.len());
 }
 
-fn get_won_cards(cards: Vec<Card>) -> Vec<Card> {
+fn get_won_cards(cards: &[Card]) -> Vec<&Card> {
     let mut won_cards = Vec::new();
-    for card in &cards {
-        won_cards.push(card.clone());
+    for card in cards {
+        won_cards.push(card);
         let new_cards = card.get_won_cards(&cards);
         won_cards.extend(new_cards);
     }
@@ -102,7 +102,7 @@ fn get_won_cards(cards: Vec<Card>) -> Vec<Card> {
 }
 
 impl Card {
-    fn get_won_cards(&self, cards: &Vec<Card>) -> Vec<Card> {
+    fn get_won_cards<'a>(&self, cards: &'a [Card]) -> Vec<&'a Card> {
         let mut won_cards = Vec::new();
         let num_matches = self.get_num_matches();
         let id_ini = self._id + 1;
@@ -111,7 +111,7 @@ impl Card {
         for card_id in range {
             let index = card_id - 1;
             let card = &cards[index as usize];
-            won_cards.push(card.clone());
+            won_cards.push(card);
             let card_won_cards = card.get_won_cards(&cards);
             won_cards.extend(card_won_cards);
         }
