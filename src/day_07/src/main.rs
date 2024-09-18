@@ -2,6 +2,8 @@ use std::collections::HashMap;
 use std::iter::zip;
 use std::cmp::Ordering;
 
+static mut PART: u32 = 1;
+
 fn main() {
     println!("PART 1");
     println!("------");
@@ -10,6 +12,7 @@ fn main() {
 }
 
 fn part_1(filename: &str) {
+    unsafe { PART = 1 };
     let hands = read_hands(filename);
     let mut total = 0;
     for (rank, hand) in hands.iter().enumerate() {
@@ -139,7 +142,7 @@ impl PartialEq for Hand {
 
 impl Eq for Hand {}
 
-#[derive(Debug)]
+#[derive(Clone, Debug)]
 struct Card {
     symbol: char,
 }
@@ -156,11 +159,19 @@ impl Card {
         char_to_value.insert('8', 8);
         char_to_value.insert('9', 9);
         char_to_value.insert('T', 10);
-        char_to_value.insert('J', 11);
+        char_to_value.insert('J', unsafe { Card::get_j_value() } );
         char_to_value.insert('Q', 12);
         char_to_value.insert('K', 13);
         char_to_value.insert('A', 14);
         *char_to_value.get(&self.symbol).unwrap()
+    }
+
+    unsafe fn get_j_value() -> u32 {
+        match PART {
+            1 => 11,
+            2 => 1,
+            _ => panic!("Invalid part"),
+        }
     }
 }
 
@@ -193,4 +204,30 @@ enum HandType {
     TwoPair,
     OnePair,
     HighCard,
+}
+
+unsafe fn part_2(filename: &str) {
+    unsafe { PART = 2 };
+}
+
+impl Hand {
+    fn get_best_type(&self) -> HandType {
+        // Get possible type when replacing J with other cards
+        if !self.has_j() {
+            return self.get_type();
+        }
+        let mut best_type = self.get_type();
+        let possible_hands = Vec::new();
+        let cards = self.cards.clone();
+        cards.sort();
+    }
+
+    fn has_j(&self) -> bool {
+        for card in self.cards.iter() {
+            if card.symbol == 'J' {
+                return true;
+            }
+        }
+        false
+    }
 }
